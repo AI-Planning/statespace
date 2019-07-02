@@ -281,7 +281,7 @@ define(function () {
         name: 'Statespace',
         author: 'Mau Magnaguagno',
         email: 'mauricio.magnaguagno@acad.pucrs.br',
-        description: 'TODO',
+        description: 'Visualize state-space explored during planning',
 
         // This will be called whenever the plugin is loaded or enabled
         initialize: function() {
