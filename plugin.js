@@ -4,72 +4,10 @@ var viewerWidth, viewerHeight,
     maxLabelLength = 130,
     deg2rad = Math.PI / 180,
     root, tree, svgGroup, diagonal, treeHeight, stateCounter,
-    zoomListener,
+    zoom, zoomListener,
     loaded = false,
     tooltip,
     svg;
-
-function ShowStatespace() {
-    var domText = window.ace.edit($('#domainSelection').find(':selected').val()).getSession().getValue();
-    var probText = window.ace.edit($('#problemSelection').find(':selected').val()).getSession().getValue();
-
-    $('#chooseFilesModal').modal('toggle');
-    $('#plannerURLInput').show();
-    window.toastr.info('Generating Statespace...');
-
-    $.ajax({type: "POST",
-            url: "https://web-planner.herokuapp.com/graph",
-            data: {domain: domText, problem: probText}
-        })
-        .done(function (res) {
-            if(res.error) {
-                window.toastr.error('Problem with the server.');
-                console.log(res.error);
-            } else {
-                window.toastr.success('Statespace complete!');
-                updateHTML(res);
-            }
-        })
-        .fail(function (res) {
-            window.toastr.error('Error: Malformed URL?');
-        });
-}
-
-function updateHTML(output) {
-    var counter = Object.keys(window.statespaces).length + 1;
-    var tab_name = 'Statespace (' + (counter) + ')';
-    window.new_tab(tab_name, function(editor_name) {
-        window.statespaces[editor_name] = output;
-        var plan_html = '<div class=\"plan-display\">\n';
-        plan_html += '<h2>Statespace</h2>\n';
-        plan_html += '<button onclick="changeLayout()" style="float:right">Change Layout</button>\n'
-        plan_html += '<p id="hv-output"></p>\n';
-        plan_html += '<pre id="svg-container' + counter + '" style="background-color:white;font-family:\'Helvetica Neue\',Helvetica,Arial,sans-serif;width:80vw;height:75vh"></pre>';
-
-        // Define the zoomListener which calls the function on the "zoom" event constrained within the scaleExtents
-        var zoom = d3.behavior.zoom().scaleExtent([0.05, 3]).on("zoom", function() {
-          svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-        });
-
-        $('#' + editor_name).html(plan_html);
-        var svg_container = $("#svg-container" + counter);
-        svg = d3.select("#svg-container" + counter).append("svg")
-          .attr("width","100%")
-          .attr("height", "100%")
-          .attr("preserveAspectRatio", "xMinYMid meet")
-          .attr("display", "block")
-          .call(zoom);
-        tooltip = d3.select("body").append("div")
-          .attr("class", "tooltip")
-          .style("opacity", 0);
-        svgGroup = svg.append("g");
-        var w = svg_container.width();
-        var h = svg_container.height();
-        zoom.translate([w / 2, h / 2]);
-        init(w, h, zoom);
-        load(output, svgGroup);
-    });
-}
 
 // Must be called before loading
 function init(width, height, zoom)
@@ -274,9 +212,78 @@ function changeLayout() {
     update(root, false);
 }
 
+function clearSvg(x, y)
+{
+    svg.selectAll("g").remove();
+    svgGroup = svg.append("g");
+    zoom.scale(1);
+    zoom.translate([x, y]);
+}
+
+function ShowStatespace() {
+    var domText = window.ace.edit($('#domainSelection').find(':selected').val()).getSession().getValue();
+    var probText = window.ace.edit($('#problemSelection').find(':selected').val()).getSession().getValue();
+
+    $('#chooseFilesModal').modal('toggle');
+    $('#plannerURLInput').show();
+    window.toastr.info('Generating Statespace...');
+
+    $.ajax({type: "POST",
+            url: "https://web-planner.herokuapp.com/graph",
+            data: {domain: domText, problem: probText}
+        })
+        .done(function (res) {
+            if(res.error) {
+                window.toastr.error('Problem with the server.');
+                console.log(res.error);
+            } else {
+                window.toastr.success('Statespace complete!');
+                updateHTML(res);
+            }
+        })
+        .fail(function (res) {
+            window.toastr.error('Error: Malformed URL?');
+        });
+}
+
+function updateHTML(output) {
+    if (!window.statespace) {
+        window.new_tab('Statespace', function(editor_name) {
+            window.statespace = output;
+            var plan_html = '<div class=\"plan-display\">\n';
+            plan_html += '<h2>Statespace</h2>\n';
+            plan_html += '<button onclick="changeLayout()" style="float:right">Change Layout</button>\n'
+            plan_html += '<p id="hv-output"></p>\n';
+            plan_html += '<pre id="svg-container" style="background-color:white;font-family:\'Helvetica Neue\',Helvetica,Arial,sans-serif;width:80vw;height:75vh"></pre>';
+
+            // Define the zoomListener which calls the function on the "zoom" event constrained within the scaleExtents
+            zoom = d3.behavior.zoom().scaleExtent([0.05, 3]).on("zoom", function() {
+              svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+            });
+
+            $('#' + editor_name).html(plan_html);
+            svg = d3.select("#svg-container").append("svg")
+              .attr("width","100%")
+              .attr("height", "100%")
+              .attr("preserveAspectRatio", "xMinYMid meet")
+              .attr("display", "block")
+              .call(zoom);
+            tooltip = d3.select("body").append("div")
+              .attr("class", "tooltip")
+              .style("opacity", 0);
+            var svg_container = $("#svg-container");
+            var w = svg_container.width();
+            var h = svg_container.height();
+            init(w, h, zoom);
+        });
+    }
+    clearSvg(viewerWidth / 2, viewerHeight / 2);
+    load(output, svgGroup);
+}
+
 define(function () {
     // Store statespaces
-    window.statespaces = {};
+    window.statespace;
     window.d3_loaded = false;
 
     return {
