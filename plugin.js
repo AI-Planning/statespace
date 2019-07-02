@@ -4,18 +4,10 @@ var viewerWidth, viewerHeight,
     maxLabelLength = 130,
     deg2rad = Math.PI / 180,
     root, tree, svgGroup, diagonal, treeHeight, stateCounter,
-    zoom, zoomListener,
+    zoomListener,
     loaded = false,
     tooltip,
     svg;
-
-// Must be called before loading
-function init(width, height, zoom)
-{
-    viewerWidth = width;
-    viewerHeight = height;
-    zoomListener = zoom;
-}
 
 function updateLayout(layoutType) {
     if(layoutType) {
@@ -216,8 +208,8 @@ function clearSvg(x, y)
 {
     svg.selectAll("g").remove();
     svgGroup = svg.append("g");
-    zoom.scale(1);
-    zoom.translate([x, y]);
+    zoomListener.scale(1);
+    zoomListener.translate([x, y]);
 }
 
 function ShowStatespace() {
@@ -257,7 +249,7 @@ function updateHTML(output) {
             plan_html += '<pre id="svg-container" style="background-color:white;font-family:\'Helvetica Neue\',Helvetica,Arial,sans-serif;width:80vw;height:75vh"></pre>';
 
             // Define the zoomListener which calls the function on the "zoom" event constrained within the scaleExtents
-            zoom = d3.behavior.zoom().scaleExtent([0.05, 3]).on("zoom", function() {
+            zoomListener = d3.behavior.zoom().scaleExtent([0.05, 3]).on("zoom", function() {
               svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
             });
 
@@ -267,14 +259,13 @@ function updateHTML(output) {
               .attr("height", "100%")
               .attr("preserveAspectRatio", "xMinYMid meet")
               .attr("display", "block")
-              .call(zoom);
+              .call(zoomListener);
             tooltip = d3.select("body").append("div")
               .attr("class", "tooltip")
               .style("opacity", 0);
             var svg_container = $("#svg-container");
-            var w = svg_container.width();
-            var h = svg_container.height();
-            init(w, h, zoom);
+            viewerWidth = svg_container.width();
+            viewerHeight = svg_container.height();
         });
     }
     clearSvg(viewerWidth / 2, viewerHeight / 2);
