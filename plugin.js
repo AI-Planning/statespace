@@ -230,7 +230,7 @@ function ShowStatespace() {
                 console.log(res.error);
             } else {
                 window.toastr.success('Statespace complete!');
-                updateHTML(res);
+                updateStatespaceHTML(res);
             }
         })
         .fail(function (res) {
@@ -238,7 +238,7 @@ function ShowStatespace() {
         });
 }
 
-function updateHTML(output) {
+function updateStatespaceHTML(output) {
     if (!window.statespace) {
         window.new_tab('Statespace', function(editor_name) {
             window.statespace = output;
