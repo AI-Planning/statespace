@@ -239,9 +239,9 @@ function ShowStatespace() {
 }
 
 function updateStatespaceHTML(output) {
-    if (!window.statespace) {
+    if ($('#' + window.statespace_editor_name).length == 0) {
         window.new_tab('Statespace', function(editor_name) {
-            window.statespace = output;
+            window.statespace_editor_name = editor_name;
             var plan_html = '<div class=\"plan-display\">\n';
             plan_html += '<h2>Statespace</h2>\n';
             plan_html += '<button onclick="changeLayout()" style="float:right">Change Layout</button>\n'
@@ -273,8 +273,6 @@ function updateStatespaceHTML(output) {
 }
 
 define(function () {
-    // Store statespaces
-    window.statespace;
     window.d3_loaded = false;
 
     return {
