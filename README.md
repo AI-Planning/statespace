@@ -59,12 +59,13 @@ The other state does meet the requirements to be ``goal state`` applying ``move(
 This example contains a very small JSON, remove spaces to obtain smaller files and better response times.
 
 Each node contains a:
-* ``name``: string - at most one node must be ``"goal state"`` for the implementation to recognize this node as the goal state to generate a bold path, otherwise no path is highlighted. Other nodes can have any name.
-* ``color`` hex string #RRGGBB - we use color to show the distance between the current state and the goal state to generate a visual way to see incremental steps towards the goal.
-  * Color gradient from blue (far from goal) to red (goal)
-* ``state``: bit string - each char set to "1" represent a predicate from ``predicates`` at the same index that is true in a state. Leading zeros can be omitted.
-* ``children``: array of nodes - array can be empty
-* ``action``: string - name of action that generated this state, does not exist for the initial state.
+
+- ``name``: string - at most one node must be ``"goal state"`` for the implementation to recognize this node as the goal state to generate a bold path, otherwise no path is highlighted. Other nodes can have any name.
+- ``color`` hex string #RRGGBB - optional secondary notation to show the distance between the current and the goal state.
+  - Color gradient from blue (far from goal) to red (goal)
+- ``state``: bit string - each char set to "1" represent a predicate from ``predicates`` at the same index that is true in a state. Leading zeros can be omitted.
+- ``children``: array of nodes - array can be empty
+- ``action``: string - name of action that generated this state, does not exist for the initial state.
 
 All nodes share the same ``predicates``, a list of fluent predicates used to display description of each state.
 Rigid predicates are not stored as they never change during planning.
