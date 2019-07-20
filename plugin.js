@@ -244,7 +244,7 @@ function updateStatespaceHTML(output) {
             window.statespace_editor_name = editor_name;
             var plan_html = '<div class=\"plan-display\">\n';
             plan_html += '<h2>Statespace</h2>\n';
-            plan_html += '<button onclick="changeLayout()" style="float:right">Change Layout</button>\n'
+            plan_html += '<button onclick="changeLayout()" style="float:right">Change Layout</button>\n';
             plan_html += '<p id="hv-output"></p>\n';
             plan_html += '<pre id="svg-container" style="background-color:white;font-family:\'Helvetica Neue\',Helvetica,Arial,sans-serif;width:80vw;height:75vh"></pre>';
 

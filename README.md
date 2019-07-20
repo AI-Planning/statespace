@@ -61,8 +61,8 @@ This example contains a very small JSON, remove spaces to obtain smaller files a
 Each node contains a:
 
 - ``name``: string - at most one node must be ``"goal state"`` for the implementation to recognize this node as the goal state to generate a bold path, otherwise no path is highlighted. Other nodes can have any name.
-- ``color`` hex string #RRGGBB - optional secondary notation to show the distance between the current and the goal state.
-  - Color gradient from blue (far from goal) to red (goal)
+- ``color`` color string - optional secondary notation to show the distance between current and goal state.
+    - Color gradient from blue (far from goal) to red (goal)
 - ``state``: bit string - each char set to "1" represent a predicate from ``predicates`` at the same index that is true in a state. Leading zeros can be omitted.
 - ``children``: array of nodes - array can be empty
 - ``action``: string - name of action that generated this state, does not exist for the initial state.
