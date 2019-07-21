@@ -309,7 +309,7 @@ define(function () {
         },
 
         // This is called whenever the plugin is disabled
-        disable: function() { window.remove_menu_button('statespaceMenuItem'); },
+        disable: function() { window.remove_menu_button('statespaceMenuItem'); loaded = false; },
 
         // Used to save the plugin settings for later
         save: function() { return {}; },
