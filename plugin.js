@@ -5,7 +5,6 @@ var viewerWidth, viewerHeight,
     deg2rad = Math.PI / 180,
     root, tree, svgGroup, diagonal, treeHeight, stateCounter,
     zoomListener,
-    loaded = false,
     tooltip,
     svg;
 
@@ -193,12 +192,10 @@ function load(jsonData, svg)
 
     updateLayout(layout);
     update(root, true);
-    loaded = true;
     document.getElementById("hv-output").innerHTML = "Visited States: " + stateCounter + "&emsp;Tree Height: " + treeHeight;
 }
 
 function changeLayout() {
-    if(!loaded) return;
     layout = !layout;
     updateLayout(layout);
     update(root, false);
@@ -312,7 +309,7 @@ define(function () {
         },
 
         // This is called whenever the plugin is disabled
-        disable: function() { window.remove_menu_button('statespaceMenuItem'); loaded = false; },
+        disable: function() { window.remove_menu_button('statespaceMenuItem'); },
 
         // Used to save the plugin settings for later
         save: function() { return {}; },
