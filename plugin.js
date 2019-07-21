@@ -194,7 +194,7 @@ function load(jsonData, svg)
     updateLayout(layout);
     update(root, true);
     loaded = true;
-    document.getElementById("hv-output").innerHTML = "Visited States: " + stateCounter + "<br>Tree Height: " + treeHeight;
+    document.getElementById("hv-output").innerHTML = "Visited States: " + stateCounter + "&emsp;Tree Height: " + treeHeight;
 }
 
 function changeLayout() {
@@ -242,11 +242,14 @@ function updateStatespaceHTML(output) {
     if ($('#' + window.statespace_editor_name).length == 0) {
         window.new_tab('Statespace', function(editor_name) {
             window.statespace_editor_name = editor_name;
-            var plan_html = '<div class=\"plan-display\">\n';
+            var plan_html = '<div class="plan-display">\n';
             plan_html += '<h2>Statespace</h2>\n';
-            plan_html += '<button onclick="changeLayout()" style="float:right">Change Layout</button>\n';
+            plan_html += '<button onclick="changeLayout()" style="float:right;margin:0 16px">Change Layout</button>\n';
+            plan_html += '<div style="width:200px;height:26px;background:linear-gradient(to right,blue,red);border-radius:4px;float:right">\n';
+            plan_html += '<p style="color:white;float:left;margin:4px">0%</p>\n';
+            plan_html += '<p style="color:white;float:right;margin:4px">100%</p>\n</div>\n';
             plan_html += '<p id="hv-output"></p>\n';
-            plan_html += '<pre id="svg-container" style="background-color:white;font-family:\'Helvetica Neue\',Helvetica,Arial,sans-serif;width:80vw;height:75vh"></pre>';
+            plan_html += '<pre id="svg-container" style="background-color:white;font-family:\'Helvetica Neue\',Helvetica,Arial,sans-serif;margin-right:16px;height:80vh"></pre>';
 
             // Define the zoomListener which calls the function on the "zoom" event constrained within the scaleExtents
             zoomListener = d3.behavior.zoom().scaleExtent([0.05, 3]).on("zoom", function() {
