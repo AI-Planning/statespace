@@ -239,7 +239,7 @@ function updateStatespaceHTML(output) {
     if ($('#' + window.statespace_editor_name).length === 0) {
         window.new_tab('Statespace', function(editor_name) {
             window.statespace_editor_name = editor_name;
-            var plan_html = '<div style="margin:16px">\n';
+            var plan_html = '<div style="margin:13px 26px">\n';
             plan_html += '<h2>Statespace</h2>\n';
             plan_html += '<button onclick="changeLayout()" style="float:right;margin-left:16px">Change Layout</button>\n';
             plan_html += '<div style="width:200px;height:26px;background:linear-gradient(to right,blue,red);border-radius:4px;float:right">\n';
