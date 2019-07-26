@@ -217,7 +217,7 @@ function ShowStatespace() {
     window.toastr.info('Generating Statespace...');
 
     $.ajax({type: "POST",
-            url: "https://web-planner.herokuapp.com/graph",
+            url: $('#plannerURL').val(),
             data: {domain: domText, problem: probText}
         })
         .done(function (res) {
@@ -301,7 +301,7 @@ define(function () {
             window.register_file_chooser('statespace', {
                 showChoice: function() {
                     window.setup_file_chooser('Statespace', 'Generate Statespace');
-                    $('#plannerURLInput').hide();
+                    $('#plannerURL').val('https://web-planner.herokuapp.com/graph');
                 },
                 selectChoice: ShowStatespace
             });
