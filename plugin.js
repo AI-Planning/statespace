@@ -70,8 +70,8 @@ function update(source, setup) {
         if (d.name === "goal state")
         {
             while (d !== root) {
-              d.path = true;
-              d = d.parent;
+                d.path = true;
+                d = d.parent;
             }
         }
     });
