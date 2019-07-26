@@ -114,8 +114,7 @@ function update(source, setup) {
 
         node.append("text")
             .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
-            .attr("y", -10)
-            .attr("dy", ".35em")
+            .attr("y", -6)
             .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
             .text(function(d) { return d.name; });
     }
