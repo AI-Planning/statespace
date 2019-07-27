@@ -208,6 +208,12 @@ function clearSvg(x, y)
     zoomListener.translate([x, y]);
 }
 
+function importJSON(event) {
+    var fr = new FileReader();
+    fr.onload = function(e) { updateStatespaceHTML(JSON.parse(e.target.result)); }
+    fr.readAsText(event.files[0]);
+}
+
 function ShowStatespace() {
     var domText = window.ace.edit($('#domainSelection').find(':selected').val()).getSession().getValue();
     var probText = window.ace.edit($('#problemSelection').find(':selected').val()).getSession().getValue();
