@@ -178,10 +178,9 @@ function update(source, setup) {
 }
 
 // Load JSON data into svg
-function load(jsonData, svg)
+function load(jsonData)
 {
     tree = d3.layout.tree();
-    svgGroup = svg;
 
     stateCounter = treeHeight = 0;
 
@@ -272,7 +271,7 @@ function updateStatespaceHTML(output) {
         });
     }
     clearSvg(viewerWidth / 2, viewerHeight / 2);
-    load(output, svgGroup);
+    load(output);
 }
 
 define(function () {
