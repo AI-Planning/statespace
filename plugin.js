@@ -49,6 +49,7 @@ function centerNode(source) {
 
 // Uncompress state information to a string description
 function description(state) {
+    if (typeof state === "object") return "<br>" + state.join("<br>");
     var descr = "", size = state.length - 1;
     for (var i = size; i >= 0; --i) {
         if (state[i] === "1") {
