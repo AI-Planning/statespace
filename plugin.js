@@ -59,7 +59,7 @@ function description(state) {
     return descr;
 }
 
-function update(source, setup) {
+function update(source) {
     // Compute new tree layout
     var nodes = tree.nodes(root),
         links = tree.links(nodes);
@@ -68,8 +68,7 @@ function update(source, setup) {
     nodes.forEach(function(d) {
         if (d.depth > treeHeight) treeHeight = d.depth;
         d.y = d.depth * maxLabelLength;
-        if (d.name === "goal state")
-        {
+        if (d.name === "goal state") {
             while (d !== root) {
                 d.path = true;
                 d = d.parent;
@@ -81,44 +80,42 @@ function update(source, setup) {
     var node = svgGroup.selectAll("g.node")
         .data(nodes, function(d) { return d.id || (d.id = ++stateCounter); });
 
-    if (setup) {
-        // Enter any new nodes at previous position of parent
-        node.enter().append("g")
-            .attr("class", "node")
-            .attr("transform", "translate(" + source.y0 + "," + source.x0 + ")")
-            // Toggle children on click
-            .on("click", function(d) {
-                if (d3.event.defaultPrevented) return; // click suppressed
-                if (d.children) {
-                    d._children = d.children;
-                    d.children = null;
-                } else if (d._children) {
-                    d.children = d._children;
-                    d._children = null;
-                }
-                update(d, false);
-            })
-            // Show tooltip
-            .on("mouseover", function(d) {
-                tooltip.html(d.name + description(d.state))
-                .style("left", (d3.event.pageX + 20) + "px")
-                .style("top", (d3.event.pageY - 30) + "px")
-                .style("opacity", .95);
-            })
-            // Hide tooltip
-            .on("mouseout", function(d) { tooltip.style("opacity", 0); });
+    // Enter any new nodes at previous position of parent
+    var nodeEnter = node.enter().append("g")
+        .attr("class", "node")
+        .attr("transform", "translate(" + source.y0 + "," + source.x0 + ")")
+        // Toggle children on click
+        .on("click", function(d) {
+            if (d3.event.defaultPrevented) return; // click suppressed
+            if (d.children) {
+                d._children = d.children;
+                d.children = null;
+            } else if (d._children) {
+                d.children = d._children;
+                d._children = null;
+            }
+            update(d);
+        })
+        // Show tooltip
+        .on("mouseover", function(d) {
+            tooltip.html(d.name + description(d.state))
+            .style("left", (d3.event.pageX + 20) + "px")
+            .style("top", (d3.event.pageY - 30) + "px")
+            .style("opacity", .95);
+        })
+        // Hide tooltip
+        .on("mouseout", function(d) { tooltip.style("opacity", 0); });
 
-        // Change circle fill depending on whether it has children and is collapsed
-        node.append("circle")
-            .attr("r", 8)
-            .style("fill", function(d) { return d.color });
+    // Change circle fill depending on whether it has children and is collapsed
+    nodeEnter.append("circle")
+        .attr("r", 8)
+        .style("fill", function(d) { return d.color });
 
-        node.append("text")
-            .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
-            .attr("y", -6)
-            .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-            .text(function(d) { return d.name; });
-    }
+    nodeEnter.append("text")
+        .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+        .attr("y", -6)
+        .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+        .text(function(d) { return d.name; });
 
     // Transition nodes to their new position
     node.transition()
@@ -127,7 +124,6 @@ function update(source, setup) {
             function(d) { return "translate(" + d.y + "," + d.x + ")"; } :
             function(d) { return "rotate(" + (d.x ? (d.x - 90) : 0) + ")translate(" + d.y + ")"; }
         )
-        .attr("display", "inline")
         .select("circle")
         .style("stroke", function(d) { return d._children ? "#0f0" : "#000"; });
 
@@ -135,7 +131,7 @@ function update(source, setup) {
     node.exit().transition()
         .duration(750)
         .attr("transform", "translate(" + source.y + "," + source.x + ")")
-        .attr("display", "none");
+        .remove();
 
     // Update links
     var link = svgGroup.selectAll("path")
@@ -190,14 +186,14 @@ function load(jsonData)
     root.y0 = 0;
 
     updateLayout(layout);
-    update(root, true);
+    update(root);
     document.getElementById("hv-output").innerHTML = "Visited States: " + stateCounter + "&emsp;Tree Height: " + treeHeight;
 }
 
 function changeLayout() {
     layout = !layout;
     updateLayout(layout);
-    update(root, false);
+    update(root);
 }
 
 function clearSvg(x, y)
