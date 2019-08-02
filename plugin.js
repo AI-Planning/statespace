@@ -49,14 +49,16 @@ function centerNode(source) {
 
 // Uncompress state information to a string description
 function description(state) {
-    if (typeof state === "object") return "<br>" + state.join("<br>");
-    var descr = "", size = state.length - 1;
-    for (var i = size; i >= 0; --i) {
-        if (state[i] === "1") {
-            descr += "<br>" + root.predicates[size - i];
-        }
-    }
-    return descr;
+	if(typeof state === "object") return "<br>" + state.join("<br>");
+	var descr = "";
+	for(var i = 0, h = state.length - 1; h >= 0; --h) {
+		var hex = parseInt(state[h], 16);
+		if(hex & 1) descr += "<br>" + root.predicates[i]; ++i;
+		if(hex & 2) descr += "<br>" + root.predicates[i]; ++i;
+		if(hex & 4) descr += "<br>" + root.predicates[i]; ++i;
+		if(hex & 8) descr += "<br>" + root.predicates[i]; ++i;
+	}
+	return descr;
 }
 
 function update(source) {
@@ -301,7 +303,7 @@ define(function () {
             window.register_file_chooser('statespace', {
                 showChoice: function() {
                     window.setup_file_chooser('Statespace', 'Generate Statespace');
-                    $('#plannerURL').val('https://web-planner.herokuapp.com/graph');
+                    $('#plannerURL').val('https://web-planner.herokuapp.com/statespace');
                 },
                 selectChoice: ShowStatespace
             });

@@ -13,19 +13,19 @@ A complete JSON for a trivial Hanoi problem looks like the following:
 {
   "name":  "initial state",
   "color": "#0000FF",
-  "state": "111111",
+  "state": "3F",
   "children": [
     {
       "name":  "state 1",
       "color": "#0000FF",
-      "state": "11000011110",
+      "state": "61E",
       "children": [],
       "action": "move(d1 d2 peg2)"
     },
     {
       "name":  "goal state",
       "color": "#FF0000",
-      "state": "10001011101",
+      "state": "45D",
       "children": [],
       "action": "move(d1 d2 peg3)"
     }
@@ -61,10 +61,10 @@ This example contains a very small JSON, remove spaces to obtain smaller files a
 Each node contains a:
 
 - ``name``: string - at most one node must be ``"goal state"`` for the implementation to recognize this node as the goal state to generate a bold path, otherwise no path is highlighted. Other nodes can have any name.
-- ``color`` color string - optional secondary notation to show the distance between current and goal state.
+- ``color``: color string - optional secondary notation to show the distance between current and goal state.
     - Color gradient from blue (far from goal) to red (goal)
-- ``state``: bit string or string array
-    - each char set to "1" represent a predicate from ``predicates`` at the same index that is true in a state. Leading zeros can be omitted.
+- ``state``: hexadecimal string or string array
+    - each set bit in the hexadecimal number represents a predicate from ``predicates`` at the same index that is true in the state. Leading zeros can be omitted.
     - each string in the array represents part of the state: ``["(at agent home)", "(happy agent)"]``. This representation leads to bigger files.
 - ``children``: array of nodes - array can be empty
 - ``action``: string - name of action that generated this state, does not exist for the initial state.
