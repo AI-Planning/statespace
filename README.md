@@ -93,8 +93,8 @@ Statespace is based on two D3.js examples:
 
 ## ToDo's
 - Improve documentation
-- More compact state representation with hex string instead of binary
 - Import/Export JSON files
 - Optional name and color properties
 - Generate color with user specified gradient (replace color with distance value)
 - Generate Dovetail from root to specified node (requires new JS Dovetail implementation and bridge plugin)
+- Search states (CTRL+F)
