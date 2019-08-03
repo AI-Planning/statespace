@@ -49,16 +49,16 @@ function centerNode(source) {
 
 // Uncompress state information to a string description
 function description(state) {
-	if(typeof state === "object") return "<br>" + state.join("<br>");
-	var descr = "";
-	for(var i = 0, h = state.length - 1; h >= 0; --h) {
-		var hex = parseInt(state[h], 16);
-		if(hex & 1) descr += "<br>" + root.predicates[i]; ++i;
-		if(hex & 2) descr += "<br>" + root.predicates[i]; ++i;
-		if(hex & 4) descr += "<br>" + root.predicates[i]; ++i;
-		if(hex & 8) descr += "<br>" + root.predicates[i]; ++i;
-	}
-	return descr;
+    if(typeof state === "object") return "<br>" + state.join("<br>");
+    var descr = "";
+    for(var i = 0, h = state.length - 1; h >= 0; --h) {
+        var hex = parseInt(state[h], 16);
+        if(hex & 1) descr += "<br>" + root.predicates[i]; ++i;
+        if(hex & 2) descr += "<br>" + root.predicates[i]; ++i;
+        if(hex & 4) descr += "<br>" + root.predicates[i]; ++i;
+        if(hex & 8) descr += "<br>" + root.predicates[i]; ++i;
+    }
+    return descr;
 }
 
 function update(source) {
