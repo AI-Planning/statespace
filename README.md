@@ -65,7 +65,7 @@ Each node contains a:
     - Color gradient from blue (far from goal) to red (goal)
 - ``state``: hexadecimal string or string array
     - each set bit in the hexadecimal number represents a predicate from ``predicates`` at the same index that is true in the state. Leading zeros can be omitted.
-    - each string in the array represents part of the state: ``["(at agent home)", "(happy agent)"]``. This representation leads to bigger files.
+    - each string in the array represents part of the state: ``["at agent home", "happy agent"]``. This representation leads to bigger files.
 - ``children``: array of nodes - array can be empty
 - ``action``: string - name of action that generated this state, does not exist for the initial state.
 
