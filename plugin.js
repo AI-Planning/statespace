@@ -6,7 +6,8 @@ var viewerWidth, viewerHeight,
     root, tree, svgGroup, diagonal, treeHeight, stateCounter,
     zoomListener,
     tooltip,
-    svg;
+    svg,
+    json;
 
 function updateLayout(layoutType) {
     if(layoutType) {
@@ -220,22 +221,22 @@ function ShowStatespace() {
     $('#plannerURLInput').show();
     window.toastr.info('Generating Statespace...');
 
-    $.ajax({type: "POST",
-            url: $('#plannerURL').val(),
-            data: {domain: domText, problem: probText}
-        })
-        .done(function (res) {
+    $.ajax({
+        type: "POST",
+        url: $('#plannerURL').val(),
+        data: {domain: domText, problem: probText},
+        success: function(res, status, req) {
             if(res.error) {
                 window.toastr.error('Problem with the server.');
                 console.log(res.error);
             } else {
                 window.toastr.success('Statespace complete!');
+                json = req.responseText;
                 updateStatespaceHTML(res);
             }
-        })
-        .fail(function (res) {
-            window.toastr.error('Error: Malformed URL?');
-        });
+        },
+        error: function(res) { window.toastr.error('Error: Malformed URL?'); }
+    });
 }
 
 function updateStatespaceHTML(output) {
@@ -273,7 +274,7 @@ function updateStatespaceHTML(output) {
     load(output);
 }
 
-define(function () {
+define(function() {
     window.d3_loaded = false;
 
     return {
