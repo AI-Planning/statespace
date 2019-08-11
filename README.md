@@ -73,6 +73,7 @@ All nodes share the same ``predicates``, a list of fluent predicates used to dis
 Rigid predicates are not stored as they never change during planning.
 
 Web-Planner uses breadth-first search and will ignore a previously visited state, which explains why some children may appear to be missing from the statespace.
+Previously found states are not connected to keep the graph as a tree structure, however previous states can reappear in new nodes if desired.
 
 ## References
 For more information see our paper [WEB PLANNER: A Tool to Develop Classical Planning Domains and Visualize Heuristic State-Space Search](http://icaps17.icaps-conference.org/workshops/UISP/uisp17proceedings.pdf#page=36)
@@ -93,7 +94,7 @@ Statespace is based on two D3.js examples:
 
 ## ToDo's
 - Improve documentation
-- Import/Export JSON files
+- Import JSON files
 - Optional name and color properties
 - Generate color with user specified gradient (replace color with distance value)
 - Generate Dovetail from root to specified node (requires new JS Dovetail implementation and bridge plugin)

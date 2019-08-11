@@ -112,7 +112,7 @@ function update(source) {
     // Change circle fill depending on whether it has children and is collapsed
     nodeEnter.append("circle")
         .attr("r", 8)
-        .style("fill", function(d) { return d.color });
+        .style("fill", function(d) { return d.color; });
 
     nodeEnter.append("text")
         .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
@@ -207,6 +207,18 @@ function clearSvg(x, y)
     zoomListener.translate([x, y]);
 }
 
+function downloadJSON() {
+	if(json) {
+		var element = document.createElement("a");
+		element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(json));
+		element.setAttribute("download", "statespace.json");
+		element.style.display = "none";
+		document.body.appendChild(element);
+		element.click();
+		document.body.removeChild(element);
+	}
+}
+
 function importJSON(event) {
     var fr = new FileReader();
     fr.onload = function(e) { updateStatespaceHTML(JSON.parse(e.target.result)); }
@@ -244,6 +256,7 @@ function updateStatespaceHTML(output) {
         window.new_tab('Statespace', function(editor_name) {
             window.statespace_editor_name = editor_name;
             $('#' + editor_name).html('<div style="margin:13px 26px"><h2>Statespace</h2>' +
+            '<button onclick="downloadJSON()" style="float:right;margin-left:16px">Download JSON</button>' +
             '<button onclick="changeLayout()" style="float:right;margin-left:16px">Change Layout</button>' +
             '<div style="width:200px;height:26px;background:linear-gradient(to right,blue,red);border-radius:4px;float:right">' +
             '<p style="color:white;float:left;margin:4px">0%</p>' +
