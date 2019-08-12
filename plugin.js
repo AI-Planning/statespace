@@ -220,6 +220,7 @@ function downloadJSON() {
 }
 
 function importJSON(event) {
+    $('#chooseFilesModal').modal('toggle');
     var fr = new FileReader();
     fr.onload = function(e) { updateStatespaceHTML(JSON.parse(e.target.result)); }
     fr.readAsText(event.files[0]);
@@ -318,6 +319,9 @@ define(function() {
                 showChoice: function() {
                     window.setup_file_chooser('Statespace', 'Generate Statespace');
                     $('#plannerURL').val('https://web-planner.herokuapp.com/statespace');
+                    document.getElementById('chooseFilesExtraSpace').innerHTML = '<hr>' +
+                    '<p>Load local <a href="https://bitbucket.org/planning-researchers/statespace" target="_blank">statespace JSON</a></p>' +
+                    '<input type="file" accept=".json" onchange="importJSON(this)">';
                 },
                 selectChoice: ShowStatespace
             });
