@@ -60,13 +60,13 @@ This example contains a very small JSON, remove spaces to obtain smaller files a
 
 Each node contains a:
 
-- ``name``: string - at most one node must be ``"goal state"`` for the implementation to recognize this node as the goal state to generate a bold path, otherwise no path is highlighted. Other nodes can have any name.
+- ``name``: string - nodes can have any name, however paths between initial state and ``"goal state"`` nodes are highlighted.
 - ``color``: color string - optional secondary notation to show the distance between current and goal state.
-    - Color gradient from blue (far from goal) to red (goal)
-- ``state``: hexadecimal string or string array
+    - Color gradient from blue (far from goal) to red (goal).
+- ``state``: hexadecimal string or string array.
     - each set bit in the hexadecimal number represents a predicate from ``predicates`` at the same index that is true in the state. Leading zeros can be omitted.
     - each string in the array represents part of the state: ``["at agent home", "happy agent"]``. This representation leads to bigger files.
-- ``children``: array of nodes - array can be empty
+- ``children``: array of nodes - array can be empty.
 - ``action``: string - name of action that generated this state, does not exist for the initial state.
 
 All nodes share the same ``predicates``, a list of fluent predicates used to display description of each state.
@@ -94,7 +94,6 @@ Statespace is based on two D3.js examples:
 
 ## ToDo's
 - Improve documentation
-- Import JSON files
 - Optional name and color properties
 - Generate color with user specified gradient (replace color with distance value)
 - Generate Dovetail from root to specified node (requires new JS Dovetail implementation and bridge plugin)
