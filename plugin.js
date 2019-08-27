@@ -222,7 +222,7 @@ function downloadJSON() {
 function importJSON(event) {
     $('#chooseFilesModal').modal('toggle');
     var fr = new FileReader();
-    fr.onload = function(e) { updateStatespaceHTML(JSON.parse(e.target.result)); }
+    fr.onload = function(e) { updateStatespaceHTML(JSON.parse(json = e.target.result)); }
     fr.readAsText(event.files[0]);
 }
 
