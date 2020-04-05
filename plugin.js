@@ -320,7 +320,7 @@ define(function() {
                     window.setup_file_chooser('Statespace', 'Generate Statespace');
                     $('#plannerURL').val('https://web-planner.herokuapp.com/statespace');
                     document.getElementById('chooseFilesExtraSpace').innerHTML = '<hr>' +
-                    '<p>Load local <a href="https://bitbucket.org/planning-researchers/statespace" target="_blank">statespace JSON</a></p>' +
+                    '<p>Load local <a href="https://github.com/AI-Planning/statespace" target="_blank">statespace JSON</a></p>' +
                     '<input type="file" accept=".json" onchange="importJSON(this)">';
                 },
                 selectChoice: ShowStatespace
