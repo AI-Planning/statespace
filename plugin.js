@@ -229,6 +229,7 @@ function importJSON(event) {
 function ShowStatespace() {
     var domText = window.ace.edit($('#domainSelection').find(':selected').val()).getSession().getValue();
     var probText = window.ace.edit($('#problemSelection').find(':selected').val()).getSession().getValue();
+    var heuristic = document.getElementsByName('heuristic')[0].checked ? '' : 'hamming';
 
     $('#chooseFilesModal').modal('toggle');
     $('#plannerURLInput').show();
@@ -237,7 +238,7 @@ function ShowStatespace() {
     $.ajax({
         type: "POST",
         url: $('#plannerURL').val(),
-        data: {domain: domText, problem: probText},
+        data: {domain: domText, problem: probText, heuristic: heuristic},
         success: function(res, status, req) {
             if(res.error) {
                 window.toastr.error('Problem with the server.');
@@ -248,7 +249,7 @@ function ShowStatespace() {
                 updateStatespaceHTML(res);
             }
         },
-        error: function(res) { window.toastr.error('Error: Malformed URL?'); }
+        error: function(res) { window.toastr.error('Error: Malformed URL or server limit reached'); }
     });
 }
 
@@ -319,7 +320,11 @@ define(function() {
                 showChoice: function() {
                     window.setup_file_chooser('Statespace', 'Generate Statespace');
                     $('#plannerURL').val('https://web-planner.herokuapp.com/statespace');
-                    document.getElementById('chooseFilesExtraSpace').innerHTML = '<hr>' +
+                    document.getElementById('chooseFilesExtraSpace').innerHTML = '<hr><form>' +
+                    '<label class="col-sm-2 control-label">Search:</label>' +
+                    '<label class="radio-inline"><input type="radio" name="heuristic" checked>Blind search (optimal)</label>' +
+                    '<label class="radio-inline"><input type="radio" name="heuristic">Heuristic search (fast)</label>' +
+                    '</form><hr>' +
                     '<p>Load local <a href="https://github.com/AI-Planning/statespace" target="_blank">statespace JSON</a></p>' +
                     '<input type="file" accept=".json" onchange="importJSON(this)">';
                 },
