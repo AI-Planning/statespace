@@ -72,8 +72,16 @@ Each node contains a:
 All nodes share the same ``predicates``, a list of fluent predicates used to display description of each state.
 Rigid predicates are not stored as they never change during planning.
 
-Web-Planner uses breadth-first search and will ignore a previously visited state, which explains why some children may appear to be missing from the statespace.
+Web-Planner uses [breadth-first search](https://en.wikipedia.org/wiki/Breadth-first_search) (optimal) or [greedy best-first search](https://en.wikipedia.org/wiki/Best-first_search) (fast) with [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) and will ignore a previously visited state, which explains why some children may appear to be missing from the statespace.
 Previously found states are not connected to keep the graph as a tree structure, however previous states can reappear in new nodes if desired.
+
+## Payload
+The client asks the server defined by ``Custom Planner URL`` for a statespace JSON, using ``{domain: domText, problem: probText, heuristic: heurText}`` as input, where:
+- ``domText`` is the domain string;
+- ``probText`` is the problem string;
+- ``heurText`` is the heuristic search mode, currently limited to ``''`` and ``'hamming'``.
+
+The expected response is a [statespace JSON](#statespace-json).
 
 ## References
 For more information see our paper [WEB PLANNER: A Tool to Develop Classical Planning Domains and Visualize Heuristic State-Space Search](http://icaps17.icaps-conference.org/workshops/UISP/uisp17proceedings.pdf#page=36)
