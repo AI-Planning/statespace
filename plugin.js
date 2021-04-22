@@ -99,15 +99,27 @@ function update(source) {
             }
             update(d);
         })
-        // Show tooltip
+        // Show tooltip and change opacity of children
         .on("mouseover", function(d) {
             tooltip.html(d.name + description(d.state))
-            .style("left", (d3.event.pageX + 20) + "px")
-            .style("top", (d3.event.pageY - 30) + "px")
-            .style("opacity", .95);
+                .style("left", (d3.event.pageX + 20) + "px")
+                .style("top", (d3.event.pageY - 30) + "px")
+                .style("opacity", .95);
+            node.filter(function(f) {
+                while (f = f.parent)
+                    if (f === d) return true;
+            }).transition().duration(300).style("opacity", 0.2);
+            link.filter(function(f) {
+                for (f = f.source; f; f = f.parent)
+                    if (f === d) return true;
+            }).transition().duration(300).style("opacity", 0.2);
         })
-        // Hide tooltip
-        .on("mouseout", function(d) { tooltip.style("opacity", 0); });
+        // Hide tooltip and reset children opacity
+        .on("mouseout", function(d) {
+            tooltip.style("opacity", 0);
+            node.transition().duration(300).style("opacity", 1);
+            link.transition().duration(300).style("opacity", 1);
+        });
 
     // Change circle fill depending on whether it has children and is collapsed
     nodeEnter.append("circle")
